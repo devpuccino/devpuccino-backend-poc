@@ -1,0 +1,21 @@
+server:
+  port: 8080
+spring:
+  webflux:
+    base-path: poc-circuit-breaker
+resilience4j:
+  circuitbreaker:
+    instances:
+      product-service:
+        failureRateThreshold: 50 # percentage
+        waitDurationInOpenState: 60000 # milliseconds
+        minimumNumberOfCalls: 5
+        recordExceptions:
+          - com.devpuccino.poc.circuitbreaker.exception.DataNotFoundException
+        slowCallRateThreshold: 100 #percentage
+        slowCallDurationThreshold: 12000 #milliseconds
+        slidingWindowSize: 10
+  bulkhead:
+    instances:
+      product-service:
+        maxConcurrentCalls: 10
